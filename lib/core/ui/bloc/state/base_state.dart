@@ -1,7 +1,6 @@
 import 'package:alabs_flutter_core/core/data/network/network_exceptions.dart';
-import 'package:equatable/equatable.dart';
 
-class BaseState<T> extends Equatable {
+class BaseState<T> {
   final T? result;
   final Failure? error;
   final StateStatus status;
@@ -41,9 +40,6 @@ class BaseState<T> extends Equatable {
           status: StateStatus.success,
           value: value,
         );
-
-  @override
-  List<Object?> get props => [status, result, showLoader, value, error];
 }
 
 enum StateStatus { initial, loading, error, loaded, success }

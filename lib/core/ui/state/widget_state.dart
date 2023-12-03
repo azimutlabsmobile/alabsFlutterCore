@@ -1,3 +1,5 @@
+import "package:flutter/material.dart";
+
 abstract class CoreWidgetState<T extends StatefulWidget> extends State<T> with PostFrameMixin {}
 
 mixin PostFrameMixin<T extends StatefulWidget> on State<T> {

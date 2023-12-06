@@ -3,6 +3,7 @@ import 'package:alabs_flutter_core/core/data/network/network_exceptions.dart';
 class BaseState<T> {
   final T? result;
   final Failure? error;
+  final ErrorType errorType;
   final StateStatus status;
   final bool showLoader;
   final dynamic value;
@@ -10,6 +11,7 @@ class BaseState<T> {
   const BaseState._({
     this.result,
     this.error,
+    this.errorType = ErrorType.base,
     this.status = StateStatus.initial,
     this.showLoader = false,
     this.value,
@@ -23,10 +25,11 @@ class BaseState<T> {
           showLoader: showLoader,
         );
 
-  BaseState.error(Failure failure)
+  BaseState.error(Failure failure, [ErrorType errorType = ErrorType.base])
       : this._(
           status: StateStatus.error,
           error: failure,
+          errorType: errorType,
         );
 
   BaseState.loaded(T result)
@@ -43,3 +46,5 @@ class BaseState<T> {
 }
 
 enum StateStatus { initial, loading, error, loaded, success }
+
+enum ErrorType { base, custom }

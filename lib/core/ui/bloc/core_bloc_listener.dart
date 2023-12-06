@@ -21,7 +21,9 @@ class CoreBlocListener<B extends StateStreamable<S>, S extends BaseState>
               LoaderUtils(context).showLoader(state.showLoader);
             }
 
-            if (showError && state.status == StateStatus.error) {
+            if (showError &&
+                state.status == StateStatus.error &&
+                state.errorType == ErrorType.base) {
               showSnackBarError(context, state.error);
             }
           },

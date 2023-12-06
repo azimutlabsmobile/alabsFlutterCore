@@ -18,7 +18,9 @@ class CoreBlocConsumer<B extends StateStreamable<S>, S extends BaseState>
           listener: (context, state) {
             listener?.call(context, state);
 
-            if (showError && state.status == StateStatus.error) {
+            if (showError &&
+                state.status == StateStatus.error &&
+                state.errorType == ErrorType.base) {
               showSnackBarError(context, state.error);
             }
 

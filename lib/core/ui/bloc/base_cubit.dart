@@ -13,6 +13,7 @@ class BaseCubit<T> extends Cubit<BaseState<T>> {
     Function(Failure)? onError,
     bool showError = true,
     bool showLoading = true,
+    ErrorType errorType = ErrorType.base,
   }) async {
     if (showLoading) {
       emit(BaseState.loading(true));
@@ -26,7 +27,7 @@ class BaseCubit<T> extends Cubit<BaseState<T>> {
 
     if (response.errors != null && response.errors?.isNotEmpty == true) {
       if (showError) {
-        emit(BaseState.error(response.errors!.first));
+        emit(BaseState.error(response.errors!.first, errorType));
       }
 
       if (onError != null) {

@@ -58,4 +58,8 @@ class BaseCubit<T> extends Cubit<BaseState<T>> {
   emitError(Failure failure) {
     emit(BaseState.error(failure));
   }
+
+  emitSuccess([dynamic value]) {
+    emit(BaseState.success(value));
+  }
 }

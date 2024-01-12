@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:alabs_flutter_core/core/utils/extensions/string_ext.dart';
 import 'package:flutter/foundation.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
@@ -20,13 +21,16 @@ class PlatformUtils {
     versionName = packageInfo.version;
   }
 
-  // static launchAppInStore() async {
-  //   if (Platform.isIOS) {
-  //     const url = 'https://apps.apple.com/app/id/123456789';
-  //     await url.launchURL();
-  //   } else if (Platform.isAndroid) {
-  //     const url = 'https://play.google.com/store/apps/details?id=com.arada.app';
-  //     await url.launchURL();
-  //   }
-  //  }
+  static launchAppInStore({
+    required String appStoreId,
+    required String playMarketPackage,
+}) async {
+    if (Platform.isIOS) {
+      final url = "https://apps.apple.com/app/id$appStoreId";
+      await url.launchURL();
+    } else if (Platform.isAndroid) {
+      final url = 'https://play.google.com/store/apps/details?id=$playMarketPackage';
+      await url.launchURL();
+    }
+   }
 }

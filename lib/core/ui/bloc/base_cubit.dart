@@ -1,6 +1,7 @@
 import 'package:alabs_flutter_core/core/data/models/result_api.dart';
 import 'package:alabs_flutter_core/core/data/network/network_exceptions.dart';
 import 'package:alabs_flutter_core/core/ui/bloc/state/base_state.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class BaseCubit<T> extends Cubit<BaseState<T>> {
@@ -15,6 +16,8 @@ class BaseCubit<T> extends Cubit<BaseState<T>> {
     bool showLoading = true,
     ErrorType errorType = ErrorType.base,
   }) async {
+    _checkConnectivity();
+
     if (showLoading) {
       emit(BaseState.loading(true));
     }
@@ -38,5 +41,21 @@ class BaseCubit<T> extends Cubit<BaseState<T>> {
     if (response.data != null) {
       onResult(response.data as R);
     }
+  }
+
+  _checkConnectivity() async {
+    final connectivity = await Connectivity().checkConnectivity();
+
+    if (connectivity == ConnectivityResult.none) {
+      return emit(BaseState.error(NoConnectionFailure()));
+    }
+  }
+
+  emitResult(T result) {
+    emit(BaseState.loaded(result));
+  }
+
+  emitError(Failure failure) {
+    emit(BaseState.error(failure));
   }
 }

@@ -62,4 +62,8 @@ class BaseCubit<T> extends Cubit<BaseState<T>> {
   emitSuccess([dynamic value]) {
     emit(BaseState.success(value));
   }
+
+  emitLoading([bool showLoader = false]) {
+    emit(BaseState.loading(showLoader));
+  }
 }

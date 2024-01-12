@@ -43,6 +43,14 @@ class BaseState<T> {
           status: StateStatus.success,
           value: value,
         );
+
+  bool isLoaded() => status == StateStatus.loaded;
+
+  bool isSuccess() => status == StateStatus.success;
+
+  bool isError() => status == StateStatus.error;
+
+  bool isLoading() => status == StateStatus.loading;
 }
 
 enum StateStatus { initial, loading, error, loaded, success }

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:alabs_flutter_core/core/data/models/result_api.dart';
 import 'package:alabs_flutter_core/core/data/network/network_exceptions.dart';
 import 'package:alabs_flutter_core/core/ui/bloc/state/base_state.dart';
@@ -19,7 +21,11 @@ class BaseCubit<T> extends Cubit<BaseState<T>> {
     final hasNoInternetConnection = await _hasNoInternetConnection();
 
     if (hasNoInternetConnection) {
-      return emit(BaseState.error(NoConnectionFailure()));
+      Timer(const Duration(seconds: 3), () {
+        emit(BaseState.error(NoConnectionFailure()));
+      });
+
+      return;
     }
 
     if (showLoading) {

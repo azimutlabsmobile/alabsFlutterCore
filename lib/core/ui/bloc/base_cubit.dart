@@ -11,6 +11,7 @@ class BaseCubit<T> extends Cubit<BaseState<T>> {
       : super(initialState ?? BaseState.initial());
 
   var _isInternetErrorDisplayed = false;
+  Timer? _timer;
 
   launch<R>(
     Future<ResultApi<R>> call, {
@@ -28,8 +29,9 @@ class BaseCubit<T> extends Cubit<BaseState<T>> {
         emit(BaseState.error(NoConnectionFailure()));
       }
 
-      Timer(const Duration(seconds: 3), () {
+      _timer = Timer(const Duration(seconds: 3), () {
         _isInternetErrorDisplayed = false;
+        _timer?.cancel();
       });
 
       return;

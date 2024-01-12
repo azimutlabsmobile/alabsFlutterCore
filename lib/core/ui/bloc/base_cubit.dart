@@ -16,7 +16,11 @@ class BaseCubit<T> extends Cubit<BaseState<T>> {
     bool showLoading = true,
     ErrorType errorType = ErrorType.base,
   }) async {
-    _checkConnectivity();
+    final hasNoInternetConnection = await _hasNoInternetConnection();
+
+    if (hasNoInternetConnection) {
+      return emit(BaseState.error(NoConnectionFailure()));
+    }
 
     if (showLoading) {
       emit(BaseState.loading(true));
@@ -43,12 +47,10 @@ class BaseCubit<T> extends Cubit<BaseState<T>> {
     }
   }
 
-  _checkConnectivity() async {
+  Future<bool> _hasNoInternetConnection() async {
     final connectivity = await Connectivity().checkConnectivity();
 
-    if (connectivity == ConnectivityResult.none) {
-      return emit(BaseState.error(NoConnectionFailure()));
-    }
+    return connectivity == ConnectivityResult.none;
   }
 
   emitResult(T result) {

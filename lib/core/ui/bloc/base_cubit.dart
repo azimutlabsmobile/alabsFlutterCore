@@ -47,13 +47,13 @@ abstract class BaseCubit<T> extends Cubit<BaseState<T>> {
       emit(BaseState.loading(false));
     }
 
-    if (response.failures != null && response.failures?.isNotEmpty == true) {
+    if (response.errors != null && response.errors?.isNotEmpty == true) {
       if (showError) {
-        emit(BaseState.error(response.failure!, errorType));
+        emit(BaseState.error(response.error!, errorType));
       }
 
       if (onError != null) {
-        onError(response.failure!);
+        onError(response.error!);
       }
     }
 

@@ -10,22 +10,22 @@ mixin BaseRepository {
   Future<ResultApi<T>> apiCall<T>(Future<T> apiCall) async {
     try {
       var result = await apiCall;
-      return ResultSuccess(result);
+      return ResultApi(data: result);
     } on ServerException catch (exception) {
       _printError("ServerException $exception");
-      return ResultError([ServerFailure(response: exception.response)]);
+      return ResultApi(errors: [ServerFailure(response: exception.response)]);
     } on DioError catch (exception) {
       _printError("Dio Error $exception");
-      return ResultError([DioFailure(response: exception.response)]);
+      return ResultApi(errors: [DioFailure(response: exception.response)]);
     } on SocketException {
       _printError("SocketException");
-      return ResultError([NoConnectionFailure()]);
+      return ResultApi(errors: [NoConnectionFailure()]);
     } on Exception {
       _printError("NoConnectionFailure");
-      return ResultError([NoConnectionFailure()]);
+      return ResultApi(errors: [NoConnectionFailure()]);
     } catch (exception) {
       _printError("NoConnectionFailure");
-      return ResultError([NoConnectionFailure()]);
+      return ResultApi(errors: [NoConnectionFailure()]);
     }
   }
 

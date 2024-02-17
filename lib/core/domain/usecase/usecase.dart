@@ -2,11 +2,7 @@ import 'package:alabs_flutter_core/core/data/models/result_api.dart';
 
 abstract class BaseUseCase {
   ResultApi<T> launchMap<T>(ResultApi? result, {required T data}) {
-    if (result?.failures != null) {
-      return ResultError(result?.failures);
-    }
-
-    return ResultSuccess(data);
+    return ResultApi(errors: result?.errors, data: data);
   }
 }
 

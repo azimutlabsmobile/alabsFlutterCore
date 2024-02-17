@@ -3,4 +3,6 @@ class CoreConstants {
   static const num numZero = 0;
   static const int zero = 0;
   static const double doubleZero = 0.0;
+
+  static const phoneMask = '+7 (###) ###-##-##';
 }

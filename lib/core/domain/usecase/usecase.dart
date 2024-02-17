@@ -1,15 +1,19 @@
 import 'package:alabs_flutter_core/core/data/models/result_api.dart';
 
-abstract class UseCase {
-  ResultApi<T> launchMap<T>(ResultApi? result, T map) {
-    return ResultApi(errors: result?.errors, data: map);
+abstract class BaseUseCase {
+  ResultApi<T> launchMap<T>(ResultApi? result, {required T data}) {
+    if (result?.failures != null) {
+      return ResultError(result?.failures);
+    }
+
+    return ResultSuccess(data);
   }
 }
 
-abstract class LaunchUseCase<T> extends UseCase {
+abstract class LaunchUseCase<T> extends BaseUseCase {
   Future<ResultApi<T>> call();
 }
 
-abstract class LaunchUseCaseWithParam<Param, T> extends UseCase {
+abstract class LaunchUseCaseWithParam<Param, T> extends BaseUseCase {
   Future<ResultApi<T>> call(Param param);
 }

@@ -6,7 +6,7 @@ import 'package:alabs_flutter_core/core/ui/bloc/state/base_state.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class BaseCubit<T> extends Cubit<BaseState<T>> {
+abstract class BaseCubit<T> extends Cubit<BaseState<T>> {
   BaseCubit({BaseState<T>? initialState})
       : super(initialState ?? BaseState.initial());
 
@@ -47,13 +47,13 @@ class BaseCubit<T> extends Cubit<BaseState<T>> {
       emit(BaseState.loading(false));
     }
 
-    if (response.errors != null && response.errors?.isNotEmpty == true) {
+    if (response.failures != null && response.failures?.isNotEmpty == true) {
       if (showError) {
-        emit(BaseState.error(response.errors!.first, errorType));
+        emit(BaseState.error(response.failure!, errorType));
       }
 
       if (onError != null) {
-        onError(response.errors!.first);
+        onError(response.failure!);
       }
     }
 

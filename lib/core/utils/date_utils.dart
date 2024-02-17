@@ -1,3 +1,4 @@
+import "package:flutter/material.dart";
 import "package:intl/intl.dart";
 
 class DatePatternConstants {
@@ -52,5 +53,40 @@ extension DateExt on String {
     final parse = DateFormat(parsePattern).format(format);
 
     return parse;
+  }
+}
+
+extension DateTimeExt on DateTime {
+  bool isToday() {
+    final now = DateTime.now();
+    return now.day == day && now.month == month && now.year == year;
+  }
+
+  bool isYesterday() {
+    final yesterday = DateTime.now().subtract(const Duration(days: 1));
+    return yesterday.day == day &&
+        yesterday.month == month &&
+        yesterday.year == year;
+  }
+
+  String dateLocaleTitle(BuildContext context) {
+    final now = DateTime.now();
+    if (isToday()) {
+      return "Сегодня";
+    } else if (isYesterday()) {
+      return "Вчера";
+    } else if (now.year == year) {
+      return DateFormat.MMMMd('ru_RU').format(this);
+    } else {
+      return DateFormat.yMMMMd('ru_RU').format(this);
+    }
+  }
+
+  bool isSameDay(DateTime other) {
+    return year == other.year && month == other.month && day == other.day;
+  }
+
+  bool isSameDayAndTime(DateTime other) {
+    return isSameDay(other) && hour == other.hour && minute == other.minute;
   }
 }

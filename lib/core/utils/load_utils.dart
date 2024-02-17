@@ -35,19 +35,4 @@ class LoaderUtils {
   Future<void> _stopLoading() async {
     Navigator.of(context).pop();
   }
-// temporary hided
-// Future<void> showError(Object? error) async {
-//   ScaffoldMessenger.of(context).showSnackBar(
-//     SnackBar(
-//       action: SnackBarAction(
-//         label: 'Dismiss',
-//         onPressed: () {
-//           ScaffoldMessenger.of(context).hideCurrentSnackBar();
-//         },
-//       ),
-//       backgroundColor: Colors.red,
-//       content: Text(),
-//     ),
-//   );
-// }
 }

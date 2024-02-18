@@ -7,10 +7,13 @@ import 'package:flutter/foundation.dart';
 import 'package:logger/logger.dart';
 
 mixin BaseRepository {
-  Future<ResultApi<T>> apiCall<T>(Future<T> apiCall) async {
+  Future<ResultApi<DVO>> apiCall<DTO, DVO>(
+    Future<DTO> apiCall, {
+    required DVO Function(DTO) mapResponse,
+  }) async {
     try {
-      var result = await apiCall;
-      return ResultApi(data: result);
+      var response = await apiCall;
+      return ResultApi(data: mapResponse(response));
     } on ServerException catch (exception) {
       _printError("ServerException $exception");
       return ResultApi(errors: [ServerFailure(response: exception.response)]);

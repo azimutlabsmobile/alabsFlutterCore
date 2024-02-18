@@ -9,11 +9,11 @@ import 'package:logger/logger.dart';
 mixin BaseRepository {
   Future<ResultApi<DVO>> apiCall<DTO, DVO>(
     Future<DTO> apiCall, {
-    required DVO Function(DTO) mapResponse,
+    required DVO Function(DTO dto) onResult,
   }) async {
     try {
       var response = await apiCall;
-      return ResultApi(data: mapResponse(response));
+      return ResultApi(data: onResult(response));
     } on ServerException catch (exception) {
       _printError("ServerException $exception");
       return ResultApi(errors: [ServerFailure(response: exception.response)]);

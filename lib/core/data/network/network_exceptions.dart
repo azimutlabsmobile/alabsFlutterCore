@@ -1,11 +1,12 @@
-import 'package:alabs_flutter_core/core/ui/constants/constants.dart';
+import 'package:alabs_flutter_core/core.dart';
 import 'package:dio/dio.dart';
-import 'package:json_annotation/json_annotation.dart';
 
-part 'network_exceptions.g.dart';
+abstract interface class Failure {
+  int get code;
 
-abstract class Failure {
-  NetworkExceptions get exception;
+  String get title => "Ошибка";
+
+  String get message;
 }
 
 class ServerFailure extends Failure {
@@ -14,11 +15,10 @@ class ServerFailure extends Failure {
   ServerFailure({this.response});
 
   @override
-  NetworkExceptions get exception => NetworkExceptions(
-        statusCode: response?.statusCode,
-        response: response,
-    showMainError: true,
-      );
+  int get code => 500;
+
+  @override
+  String get message => "Ошибка сервера";
 }
 
 class DioFailure extends Failure {
@@ -27,152 +27,59 @@ class DioFailure extends Failure {
   DioFailure({this.response});
 
   @override
-  NetworkExceptions get exception => NetworkExceptions(
-        statusCode: response?.statusCode,
-        response: response,
-        showMainError: true,
-      );
+  int get code => response?.statusCode ?? -1;
+
+  @override
+  String get message => response?.data?['message'] ?? CoreConstants.empty;
+}
+
+class UnauthorizedFailure extends Failure {
+  UnauthorizedFailure({required this.message});
+
+  @override
+  int get code => 401;
+
+  @override
+  final String message;
+}
+
+class NotFoundFailure extends Failure {
+  NotFoundFailure({required this.message});
+
+  @override
+  int get code => 404;
+
+  @override
+  final String message;
 }
 
 class NoConnectionFailure extends Failure {
   @override
-  NetworkExceptions get exception => NetworkExceptions(
-        statusCode: -3,
-        showMainError: true,
-      );
+  int get code => -1;
+
+  @override
+  String get message => "Нет интернет соединения";
+}
+
+class CustomFailure implements Failure {
+  @override
+  String title;
+
+  @override
+  String message;
+
+  @override
+  int code;
+
+  CustomFailure({
+    this.title = CoreConstants.empty,
+    this.message = CoreConstants.empty,
+    this.code = -1,
+  });
 }
 
 class ServerException implements Exception {
   Response? response;
 
   ServerException({this.response});
-}
-
-class CustomFailure implements Failure {
-  String title;
-  String message;
-
-  CustomFailure(this.title, this.message);
-
-  @override
-  NetworkExceptions get exception => NetworkExceptions(
-        statusCode: -2,
-        title: title,
-        message: message,
-      );
-}
-
-class EmptyFailure implements Failure {
-  @override
-  NetworkExceptions get exception => NetworkExceptions(
-        statusCode: -2,
-        title: CoreConstants.empty,
-        message: CoreConstants.empty,
-      );
-}
-
-class NetworkExceptions {
-  late String title;
-  late String message;
-  final int? statusCode;
-  Response? response;
-  ErrorMessage? networkErrors;
-  bool showMainError = false;
-  String error;
-
-  NetworkExceptions({
-    this.statusCode = -3,
-    this.response,
-    this.title = '',
-    this.message = '',
-    this.error = CoreConstants.empty,
-    this.showMainError = false,
-  }) {
-    switch (statusCode) {
-      case -1:
-        message = 'Refresh the page';
-        title = 'Empty page';
-        showMainError = true;
-        break;
-      case -2:
-        message = message;
-        title = title;
-        showMainError = false;
-        break;
-      case -3:
-        message = 'Ошибка сервера';
-        title = 'Ошибка';
-        showMainError = false;
-        break;
-      case 413:
-        message = 'Размер файла слишком большой';
-        title = 'Ошибка';
-        showMainError = false;
-        break;
-      case 502:
-      case 503:
-      case 501:
-        message = 'Ошибка сервера';
-        title = 'Ошибка сервера';
-        showMainError = true;
-        break;
-      default:
-        title = "Ошибка";
-        message = _parseErrorMessage(response);
-        error = _parseError(response);
-        break;
-    }
-  }
-
-  @override
-  String toString() => message;
-
-  String _parseErrorMessage(Response? response) {
-    String _localError = '';
-    try {
-      networkErrors = ErrorMessage.fromJson(response?.data);
-      _localError = networkErrors?.message ??
-          networkErrors?.errorDescription ??
-          response?.data.toString() ??
-          'Ошибка сервера';
-    } catch (e) {
-      _localError = 'Ошибка сервера';
-    }
-    return _localError;
-  }
-
-  String _parseError(Response? response) {
-    String _localError = CoreConstants.empty;
-    try {
-      networkErrors = ErrorMessage.fromJson(response?.data);
-      _localError = networkErrors?.error ?? "server_error";
-    } catch (e) {
-      _localError = "server_error";
-    }
-    return _localError;
-  }
-}
-
-@JsonSerializable()
-class ErrorMessage {
-  @JsonKey(name: 'message')
-  String? message;
-  @JsonKey(name: 'code')
-  String? code;
-  @JsonKey(name: 'error')
-  String? error;
-  @JsonKey(name: 'error_description')
-  String? errorDescription;
-
-  ErrorMessage({
-    this.message,
-    this.code,
-    this.error,
-    this.errorDescription,
-  });
-
-  factory ErrorMessage.fromJson(Map<String, dynamic> json) =>
-      _$ErrorMessageFromJson(json);
-
-  Map<String, dynamic> toJson() => _$ErrorMessageToJson(this);
 }

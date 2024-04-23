@@ -1,4 +1,4 @@
-import 'package:alabs_flutter_core/core/ui/constants/constants.dart';
+import 'package:alabs_flutter_core/core/utils/constants/constants.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 /// Форматирует строку под номер телефона

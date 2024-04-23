@@ -27,9 +27,9 @@ class AlabsFlutterCorePackageModule extends _i1.MicroPackageModule {
     );
     gh.factory<_i4.SecureDataSource>(
         () => _i4.SecureDataSource(gh<_i3.SharedPreferences>()));
-    gh.factory<_i5.CoreAuthDataRepository>(
+    gh.lazySingleton<_i5.CoreAuthDataRepository>(
         () => _i5.CoreAuthDataRepository(gh<_i4.SecureDataSource>()));
-    gh.factory<_i6.CoreSystemRepository>(
+    gh.lazySingleton<_i6.CoreSystemRepository>(
         () => _i6.CoreSystemRepository(gh<_i4.SecureDataSource>()));
   }
 }

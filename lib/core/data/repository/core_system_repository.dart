@@ -1,7 +1,7 @@
 import 'package:alabs_flutter_core/core/data/dataSource/secure_data_source.dart';
 import 'package:injectable/injectable.dart';
 
-@injectable
+@lazySingleton
 class CoreSystemRepository {
   CoreSystemRepository(this._dataSource);
 

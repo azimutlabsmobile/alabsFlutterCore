@@ -1,8 +1,8 @@
 import 'package:alabs_flutter_core/core/data/dataSource/secure_data_source.dart';
-import 'package:alabs_flutter_core/core/ui/constants/constants.dart';
+import 'package:alabs_flutter_core/core/utils/constants/constants.dart';
 import 'package:injectable/injectable.dart';
 
-@injectable
+@lazySingleton
 class CoreAuthDataRepository {
 
   CoreAuthDataRepository(this._dataSource);

@@ -41,7 +41,7 @@ abstract class BaseCubit<T> extends Cubit<BaseState<T>> {
 
     if (response.failure != null && response.failures?.isNotEmpty == true) {
       if (showError) {
-        emit(BaseState.error(response.failure!, errorType));
+        emit(BaseState.failure(response.failure!, errorType));
       }
 
       if (onError != null) {
@@ -57,7 +57,7 @@ abstract class BaseCubit<T> extends Cubit<BaseState<T>> {
   _showNoInternetConnectionError() {
     if (!_isInternetErrorDisplayed) {
       _isInternetErrorDisplayed = true;
-      emit(BaseState.error(NoConnectionFailure()));
+      emit(BaseState.failure(NoConnectionFailure()));
     }
 
     _timer = Timer(const Duration(seconds: 3), () {
@@ -77,7 +77,7 @@ abstract class BaseCubit<T> extends Cubit<BaseState<T>> {
   }
 
   emitError(Failure failure) {
-    emit(BaseState.error(failure));
+    emit(BaseState.failure(failure));
   }
 
   emitSuccess([dynamic value]) {

@@ -8,7 +8,7 @@ extension BaseBlocExt<State> on Emitter<BaseState<State>> {
   }
 
   emitError(Failure failure) {
-    this(BaseState.error(failure));
+    this(BaseState.failure(failure));
   }
 
   emitSuccess([dynamic value]) {

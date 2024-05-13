@@ -42,7 +42,7 @@ abstract class BaseBloc<Event, State> extends Bloc<Event, BaseState<State>> {
 
     if (response.failure != null && response.failures?.isNotEmpty == true) {
       if (showError) {
-        emit(BaseState.error(response.failure!, errorType));
+        emit(BaseState.failure(response.failure!, errorType));
       }
 
       if (onError != null) {
@@ -58,7 +58,7 @@ abstract class BaseBloc<Event, State> extends Bloc<Event, BaseState<State>> {
   _showNoInternetConnectionError(Emitter<BaseState<State>> emit) {
     if (!_isInternetErrorDisplayed) {
       _isInternetErrorDisplayed = true;
-      emit(BaseState.error(NoConnectionFailure()));
+      emit(BaseState.failure(NoConnectionFailure()));
     }
 
     _timer = Timer(const Duration(seconds: 3), () {

@@ -1,7 +1,7 @@
 name: alabs_flutter_core
 description: "alabs Flutter Core"
 
-version: 1.2.1+1
+version: 1.2.3+1
 
 environment:
   sdk: '>=3.2.0 <4.0.0'
